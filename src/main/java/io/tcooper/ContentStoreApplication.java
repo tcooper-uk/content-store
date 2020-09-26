@@ -4,6 +4,7 @@ import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.tcooper.health.TemplateHealthCheck;
+import io.tcooper.resources.ArticleUpsert;
 import io.tcooper.resources.HelloWorld;
 
 public class ContentStoreApplication extends Application<ContentStoreConfiguration> {
@@ -31,6 +32,7 @@ public class ContentStoreApplication extends Application<ContentStoreConfigurati
 
         environment.healthChecks().register("template", templateHealthCheck);
         environment.jersey().register(helloWorld);
+        environment.jersey().register(new ArticleUpsert());
     }
 
     @Override
