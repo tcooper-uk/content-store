@@ -2,11 +2,14 @@ package io.tcooper.api.Article;
 
 public class Article {
 
-  private final ArticleUid articleUid;
-  private final String name;
-  private final String description;
-  private final String content;
-  private final int page;
+  private ArticleUid articleUid;
+  private String name;
+  private String description;
+  private String content;
+  private int page;
+
+  public Article() {
+  }
 
   public Article(ArticleUid articleUid, String name, String description, String content, int page) {
     this.articleUid = articleUid;

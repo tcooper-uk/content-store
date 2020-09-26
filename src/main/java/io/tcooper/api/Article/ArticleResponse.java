@@ -4,9 +4,12 @@ import java.time.ZonedDateTime;
 
 public class ArticleResponse {
 
-  private final Article article;
-  private final boolean created;
-  private final ZonedDateTime createdAt;
+  private Article article;
+  private boolean created;
+  private ZonedDateTime createdAt;
+
+  public ArticleResponse() {
+  }
 
   public ArticleResponse(Article article, boolean created, ZonedDateTime createdAt) {
     this.article = article;

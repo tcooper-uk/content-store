@@ -17,6 +17,18 @@ public class ArticleInsertRequest {
   @Min(1)
   private int page;
 
+  public ArticleInsertRequest() {
+  }
+
+  public ArticleInsertRequest(@NotEmpty String name,
+      @NotEmpty String description, @NotEmpty String content,
+      @Min(1) int page) {
+    this.name = name;
+    this.description = description;
+    this.content = content;
+    this.page = page;
+  }
+
   public String getName() {
     return name;
   }
