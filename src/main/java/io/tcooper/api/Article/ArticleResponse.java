@@ -1,5 +1,6 @@
 package io.tcooper.api.Article;
 
+import io.tcooper.core.Article;
 import java.time.ZonedDateTime;
 
 public class ArticleResponse {

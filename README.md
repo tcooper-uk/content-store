@@ -9,7 +9,7 @@ who knows maybe we might throw some search in the mix.
 How to start the content-store application
 ---
 
-You should check your datase is running... Then:
+You should check your database is running... Then:
 
 1. Run `mvn clean install` to build your application
 1. Start application with `java -jar target/content-store-1.0-SNAPSHOT.jar server config.yml`
@@ -24,3 +24,23 @@ Other Userful Endpoints
 ---
 
 TBC...
+
+Database
+---
+
+Prerequisites
+- Docker
+- Mongo shell
+
+#### Running
+
+```
+$ cd scripts
+$ ./devMongo.sh start
+$ mongo -u root -p admin --authenticationDatabase admin content setupDatabase.js
+```
+#### Stop
+```
+$ cd scripts
+$ ./devMongo.sh stop
+```

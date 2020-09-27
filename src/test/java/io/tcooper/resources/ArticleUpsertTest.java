@@ -1,12 +1,18 @@
 package io.tcooper.resources;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 
+import com.mongodb.client.MongoCollection;
 import io.dropwizard.testing.junit5.DropwizardExtensionsSupport;
 import io.dropwizard.testing.junit5.ResourceExtension;
-import io.tcooper.api.Article.Article;
 import io.tcooper.api.Article.ArticleInsertRequest;
 import io.tcooper.api.Article.ArticleResponse;
+import io.tcooper.core.Article;
 import java.util.Set;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
@@ -19,8 +25,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @ExtendWith(DropwizardExtensionsSupport.class)
 public class ArticleUpsertTest {
 
+  private final MongoCollection<Article> mongoCollectionMock = mock(MongoCollection.class);
+
   private final ResourceExtension underTest = ResourceExtension.builder()
-      .addResource(new ArticleUpsert())
+      .addResource(new ArticleUpsert(mongoCollectionMock))
       .build();
 
   private final String name = "Test Article";
@@ -53,6 +61,8 @@ public class ArticleUpsertTest {
     assertThat(article.getContent()).isEqualTo(content);
     assertThat(article.getPage()).isEqualTo(page);
     assertThat(article.getArticleUid()).isNotNull();
+
+    verify(mongoCollectionMock, times(1)).insertOne(isA(Article.class));
   }
 
   @Test
@@ -72,6 +82,8 @@ public class ArticleUpsertTest {
     assertThat(validationErrorSet).contains("content must not be empty");
     assertThat(validationErrorSet).contains("page must be greater than or equal to 1");
     assertThat(validationErrorSet).contains("description must not be empty");
+
+    verifyNoInteractions(mongoCollectionMock);
   }
 
 

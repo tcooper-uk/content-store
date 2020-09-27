@@ -1,4 +1,6 @@
-package io.tcooper.api.Article;
+package io.tcooper.core;
+
+import io.tcooper.api.Article.ArticleUid;
 
 public class Article {
 

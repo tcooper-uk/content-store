@@ -50,11 +50,31 @@
             <artifactId>hibernate-validator</artifactId>
         </dependency>
 
+        <!-- The database stuff -->
+
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongo-java-driver</artifactId>
+            <version>3.12.7</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mongojack</groupId>
+            <artifactId>mongojack</artifactId>
+            <version>4.0.2</version>
+        </dependency>
+
         <!-- The test stuff! -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
             <version>5.6.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>3.5.13</version>
             <scope>test</scope>
         </dependency>
         <dependency>

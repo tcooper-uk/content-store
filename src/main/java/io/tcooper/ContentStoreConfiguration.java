@@ -2,9 +2,9 @@ package io.tcooper;
 
 import io.dropwizard.Configuration;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.tcooper.db.DatabaseConfiguration;
 import javax.validation.constraints.NotEmpty;
-import org.hibernate.validator.constraints.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 
 public class ContentStoreConfiguration extends Configuration {
   @NotEmpty
@@ -12,6 +12,9 @@ public class ContentStoreConfiguration extends Configuration {
 
   @NotEmpty
   private String defaultName = "Stranger";
+
+  @NotNull
+  private DatabaseConfiguration database;
 
   @JsonProperty
   public String getTemplate() {
@@ -31,5 +34,13 @@ public class ContentStoreConfiguration extends Configuration {
   @JsonProperty
   public void setDefaultName(String defaultName) {
     this.defaultName = defaultName;
+  }
+
+  public DatabaseConfiguration getDatabase() {
+    return database;
+  }
+
+  public void setDatabase(DatabaseConfiguration database) {
+    this.database = database;
   }
 }

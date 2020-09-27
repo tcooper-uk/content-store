@@ -4,3 +4,9 @@ logging:
   level: INFO
   loggers:
     io.tcooper: DEBUG
+
+database:
+  name: content
+  uri: mongodb://localhost:27017
+  user: test
+  pass: test

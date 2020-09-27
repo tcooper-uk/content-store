@@ -1,7 +1,8 @@
 package io.tcooper.resources;
 
 import com.codahale.metrics.annotation.Timed;
-import io.tcooper.api.Article.Article;
+import com.mongodb.client.MongoCollection;
+import io.tcooper.core.Article;
 import io.tcooper.api.Article.ArticleInsertRequest;
 import io.tcooper.api.Article.ArticleResponse;
 import io.tcooper.api.Article.ArticleUid;
@@ -25,6 +26,11 @@ import org.slf4j.LoggerFactory;
 public class ArticleUpsert {
 
   private final Logger LOGGER = LoggerFactory.getLogger(ArticleInsertRequest.class);
+  private final MongoCollection<Article> articleCollection;
+
+  public ArticleUpsert(MongoCollection<Article> articleCollection) {
+    this.articleCollection = articleCollection;
+  }
 
   @PUT
   @Timed
@@ -41,6 +47,9 @@ public class ArticleUpsert {
         articleInsertRequest.getDescription(),
         articleInsertRequest.getContent(),
         articleInsertRequest.getPage());
+
+    // persist!
+    articleCollection.insertOne(article);
 
     return Response.accepted(new ArticleResponse(article, false, ZonedDateTime.now())).build();
   }
