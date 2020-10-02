@@ -11,7 +11,7 @@ import com.mongodb.client.MongoCollection;
 import io.dropwizard.testing.junit5.DropwizardExtensionsSupport;
 import io.dropwizard.testing.junit5.ResourceExtension;
 import io.tcooper.api.Article.ArticleInsertRequest;
-import io.tcooper.api.Article.ArticleResponse;
+import io.tcooper.api.Article.ArticleInsertResponse;
 import io.tcooper.core.Article;
 import java.util.Set;
 import javax.ws.rs.client.Entity;
@@ -52,10 +52,10 @@ public class ArticleUpsertTest {
 
     assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED_202);
 
-    ArticleResponse articleResponse = response.readEntity(ArticleResponse.class);
-    Article article = articleResponse.getArticle();
+    ArticleInsertResponse articleInsertResponse = response.readEntity(ArticleInsertResponse.class);
+    Article article = articleInsertResponse.getArticle();
 
-    assertThat(articleResponse.isCreated()).isFalse();
+    assertThat(articleInsertResponse.isCreated()).isFalse();
     assertThat(article.getName()).isEqualTo(name);
     assertThat(article.getDescription()).isEqualTo(description);
     assertThat(article.getContent()).isEqualTo(content);

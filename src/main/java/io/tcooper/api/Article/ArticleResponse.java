@@ -1,32 +1,39 @@
 package io.tcooper.api.Article;
 
-import io.tcooper.core.Article;
-import java.time.ZonedDateTime;
-
 public class ArticleResponse {
 
-  private Article article;
-  private boolean created;
-  private ZonedDateTime createdAt;
+  private final String articleId;
+  private final String name;
+  private final String description;
+  private final int page;
+  private final String content;
 
-  public ArticleResponse() {
+  public ArticleResponse(String articleId, String name, String description, int page,
+      String content) {
+    this.articleId = articleId;
+    this.name = name;
+    this.description = description;
+    this.page = page;
+    this.content = content;
   }
 
-  public ArticleResponse(Article article, boolean created, ZonedDateTime createdAt) {
-    this.article = article;
-    this.created = created;
-    this.createdAt = createdAt;
+  public String getArticleId() {
+    return articleId;
   }
 
-  public Article getArticle() {
-    return article;
+  public String getName() {
+    return name;
   }
 
-  public boolean isCreated() {
-    return created;
+  public String getDescription() {
+    return description;
   }
 
-  public ZonedDateTime getCreatedAt() {
-    return createdAt;
+  public int getPage() {
+    return page;
+  }
+
+  public String getContent() {
+    return content;
   }
 }

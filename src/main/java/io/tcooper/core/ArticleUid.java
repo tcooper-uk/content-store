@@ -1,6 +1,5 @@
-package io.tcooper.api.Article;
+package io.tcooper.core;
 
-import io.tcooper.core.Uid;
 import java.util.UUID;
 
 /**

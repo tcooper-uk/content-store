@@ -1,9 +1,11 @@
 package io.tcooper.core;
 
-import io.tcooper.api.Article.ArticleUid;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.bson.types.ObjectId;
 
 public class Article {
 
+  private ObjectId id;
   private ArticleUid articleUid;
   private String name;
   private String description;
@@ -39,5 +41,10 @@ public class Article {
 
   public int getPage() {
     return page;
+  }
+
+  @JsonProperty("_id")
+  public void setId(ObjectId id) {
+    this.id = id;
   }
 }

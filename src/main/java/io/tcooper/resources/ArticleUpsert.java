@@ -4,8 +4,8 @@ import com.codahale.metrics.annotation.Timed;
 import com.mongodb.client.MongoCollection;
 import io.tcooper.core.Article;
 import io.tcooper.api.Article.ArticleInsertRequest;
-import io.tcooper.api.Article.ArticleResponse;
-import io.tcooper.api.Article.ArticleUid;
+import io.tcooper.api.Article.ArticleInsertResponse;
+import io.tcooper.core.ArticleUid;
 import java.time.ZonedDateTime;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -51,6 +51,6 @@ public class ArticleUpsert {
     // persist!
     articleCollection.insertOne(article);
 
-    return Response.accepted(new ArticleResponse(article, false, ZonedDateTime.now())).build();
+    return Response.accepted(new ArticleInsertResponse(article, true, ZonedDateTime.now())).build();
   }
 }

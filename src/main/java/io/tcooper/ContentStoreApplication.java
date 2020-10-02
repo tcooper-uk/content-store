@@ -9,6 +9,7 @@ import io.tcooper.db.DatabaseConfiguration;
 import io.tcooper.db.ManagedMongoClient;
 import io.tcooper.health.PersistenceHealthCheck;
 import io.tcooper.health.TemplateHealthCheck;
+import io.tcooper.resources.ArticleQuery;
 import io.tcooper.resources.ArticleUpsert;
 import io.tcooper.resources.HelloWorld;
 import org.bson.UuidRepresentation;
@@ -57,6 +58,7 @@ public class ContentStoreApplication extends Application<ContentStoreConfigurati
         environment.healthChecks().register("persistence", persistenceHealthCheck);
         environment.jersey().register(helloWorld);
         environment.jersey().register(new ArticleUpsert(articleCollection));
+        environment.jersey().register(new ArticleQuery(articleCollection));
     }
 
     @Override
