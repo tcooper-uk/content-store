@@ -13,9 +13,11 @@ import org.bson.conversions.Bson;
 
 public class MongoFindIterableHelper<T> implements FindIterable<T> {
 
+  private final boolean hasData;
   private final T result;
 
   public MongoFindIterableHelper(T result) {
+    this.hasData = result != null;
     this.result = result;
   }
 
@@ -151,7 +153,10 @@ public class MongoFindIterableHelper<T> implements FindIterable<T> {
 
   @Override
   public MongoIterable map(Function function) {
-    return new MongoIterableHelper(function.apply(result));
+
+    return hasData
+        ? new MongoIterableHelper(function.apply(result))
+        : new MongoIterableHelper(null);
   }
 
   @Override

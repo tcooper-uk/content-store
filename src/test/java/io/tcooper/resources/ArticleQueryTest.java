@@ -66,5 +66,16 @@ public class ArticleQueryTest {
     assertThat(articleResponse.getPage()).isEqualTo(page);
   }
 
+  @Test
+  void givenIQueryForAInvalidArticleThenArticleNotFound() {
+    when(mongoCollectionMock.find(isA(Bson.class))).thenReturn(new MongoFindIterableHelper<>(null));
+
+    Response response = underTest.target("/article/942ee57d-7a4f-43fc-91f9-b474d8972ae0")
+        .request()
+        .buildGet()
+        .invoke();
+
+    assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND_404);
+  }
 
 }
