@@ -6,7 +6,6 @@ import com.mongodb.client.model.Filters;
 import io.tcooper.api.Article.ArticleInsertRequest;
 import io.tcooper.core.Article;
 import io.tcooper.core.ArticleUid;
-import io.tcooper.core.mappers.ArticleApiResponseMapper;
 import io.tcooper.core.mappers.ArticleInsertRequestMapper;
 import io.tcooper.core.mappers.ArticleInsertResponseMapper;
 import javax.validation.Valid;

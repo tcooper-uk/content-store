@@ -46,11 +46,11 @@ public class ArticleQuery {
   }
 
   @GET
-  @Path("/top")
+  @Path("/top/{limit}")
   @Timed
-  public ArticleCollection getArticles() {
+  public ArticleCollection getArticles(@PathParam("limit") int limit) {
     ArrayList<ArticleResponse> articleResponses = articleCollection.find()
-        .limit(10)
+        .limit(limit)
         .map(ArticleApiResponseMapper::map)
         .into(new ArrayList<>());
 
