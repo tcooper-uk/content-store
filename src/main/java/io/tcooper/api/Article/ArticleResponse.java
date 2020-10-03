@@ -1,5 +1,8 @@
 package io.tcooper.api.Article;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class ArticleResponse {
 
   private final String articleId;
@@ -8,7 +11,18 @@ public class ArticleResponse {
   private final int page;
   private final String content;
 
-  public ArticleResponse(String articleId, String name, String description, int page,
+
+  @JsonCreator
+  public ArticleResponse(
+      @JsonProperty("articleUid")
+      String articleId,
+      @JsonProperty("name")
+      String name,
+      @JsonProperty("description")
+      String description,
+      @JsonProperty("page")
+      int page,
+      @JsonProperty("content")
       String content) {
     this.articleId = articleId;
     this.name = name;
@@ -36,4 +50,6 @@ public class ArticleResponse {
   public String getContent() {
     return content;
   }
+
+
 }
