@@ -8,10 +8,13 @@ import static org.mockito.Mockito.when;
 import com.mongodb.client.MongoCollection;
 import io.dropwizard.testing.junit5.DropwizardExtensionsSupport;
 import io.dropwizard.testing.junit5.ResourceExtension;
+import io.tcooper.api.Article.ArticleCollection;
 import io.tcooper.api.Article.ArticleResponse;
 import io.tcooper.core.Article;
 import io.tcooper.core.ArticleUid;
 import io.tcooper.data.MongoFindIterableHelper;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ws.rs.core.Response;
 import org.bson.conversions.Bson;
 import org.eclipse.jetty.http.HttpStatus;
@@ -78,4 +81,61 @@ public class ArticleQueryTest {
     assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND_404);
   }
 
+  @Test
+  void givenIQueryForTopXArticlesThenArticlesFound() {
+    when(mongoCollectionMock.find()).thenReturn(new MongoFindIterableHelper<>(getTestArticles()));
+
+    Response response = underTest.target("/article/top/10")
+        .request()
+        .buildGet()
+        .invoke();
+
+    assertThat(response.getStatus()).isEqualTo(HttpStatus.OK_200);
+
+    ArticleCollection articleCollection = response.readEntity(ArticleCollection.class);
+
+    assertThat(articleCollection.getCount()).isEqualTo(10);
+
+    ArticleResponse articleResponse = articleCollection.getData().stream().findFirst().orElse(null);
+
+    assertThat(articleResponse.getArticleId()).isEqualTo(articleUid.toString());
+    assertThat(articleResponse.getName()).isEqualTo(name);
+    assertThat(articleResponse.getDescription()).isEqualTo(description);
+    assertThat(articleResponse.getContent()).isEqualTo(content);
+    assertThat(articleResponse.getPage()).isEqualTo(page);
+
+  }
+
+  @Test
+  void givenIQueryForTopXArticlesThenNoArticlesFound() {
+    when(mongoCollectionMock.find()).thenReturn(new MongoFindIterableHelper<>(new ArrayList<>()));
+
+    Response response = underTest.target("/article/top/10")
+        .request()
+        .buildGet()
+        .invoke();
+
+    assertThat(response.getStatus()).isEqualTo(HttpStatus.OK_200);
+
+    ArticleCollection articleCollection = response.readEntity(ArticleCollection.class);
+
+    assertThat(articleCollection.getCount()).isEqualTo(0);
+    assertThat(articleCollection.getData()).isEmpty();
+  }
+
+  private List<Article> getTestArticles() {
+    return List.of(
+        new Article(articleUid, name, description, content, page),
+        new Article(new ArticleUid(), name + " 1", description, content, page),
+        new Article(new ArticleUid(), name + " 2", description, content, page),
+        new Article(new ArticleUid(), name + " 3", description, content, page),
+        new Article(new ArticleUid(), name + " 4", description, content, page),
+        new Article(new ArticleUid(), name + " 5", description, content, page),
+        new Article(new ArticleUid(), name + " 6", description, content, page),
+        new Article(new ArticleUid(), name + " 7", description, content, page),
+        new Article(new ArticleUid(), name + " 8", description, content, page),
+        new Article(new ArticleUid(), name + " 9", description, content, page),
+        new Article(new ArticleUid(), name + " 10", description, content, page)
+    );
+  }
 }

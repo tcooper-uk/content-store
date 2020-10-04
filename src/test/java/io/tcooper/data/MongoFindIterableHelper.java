@@ -8,17 +8,24 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoIterable;
 import com.mongodb.client.model.Collation;
 import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 import org.bson.conversions.Bson;
 
 public class MongoFindIterableHelper<T> implements FindIterable<T> {
 
   private final boolean hasData;
-  private final T result;
+  private final List<T> resultSet;
+
+  public MongoFindIterableHelper(List<T> result) {
+    this.resultSet = result;
+    this.hasData = this.resultSet != null && this.resultSet.size() > 0;
+  }
 
   public MongoFindIterableHelper(T result) {
     this.hasData = result != null;
-    this.result = result;
+    this.resultSet = List.of(result);
   }
 
   @Override
@@ -28,7 +35,16 @@ public class MongoFindIterableHelper<T> implements FindIterable<T> {
 
   @Override
   public FindIterable limit(int i) {
-    return null;
+
+    if (resultSet == null) {
+      throw new IllegalStateException();
+    }
+
+    if (i >= resultSet.size()) {
+      return this;
+    }
+
+    return new MongoFindIterableHelper(resultSet.stream().limit(i).collect(Collectors.toList()));
   }
 
   @Override
@@ -155,7 +171,8 @@ public class MongoFindIterableHelper<T> implements FindIterable<T> {
   public MongoIterable map(Function function) {
 
     return hasData
-        ? new MongoIterableHelper(function.apply(result))
+        ? new MongoIterableHelper(
+          resultSet.stream().map(a -> function.apply(a)).collect(Collectors.toList()))
         : new MongoIterableHelper(null);
   }
 

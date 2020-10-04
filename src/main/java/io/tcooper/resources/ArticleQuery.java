@@ -33,28 +33,26 @@ public class ArticleQuery {
   @Path("/{articleUid}")
   @Timed
   public Response getArticleById(@PathParam("articleUid") ArticleUid articleUid) {
-    FindIterable<Article> articleUid1 = articleCollection
-        .find(Filters.eq("articleUid", articleUid));
+    ArticleResponse articleResponse = articleCollection
+        .find(Filters.eq("articleUid", articleUid))
+        .map(ArticleApiResponseMapper::map)
+        .first();
 
-    MongoIterable<ArticleResponse> map = articleUid1.map(ArticleApiResponseMapper::map);
-
-    ArticleResponse article = map.first();
-
-    return article == null
+    return articleResponse == null
         ? Response.status(HttpStatus.NOT_FOUND_404).build()
-        : Response.ok(article).build();
+        : Response.ok(articleResponse).build();
   }
 
   @GET
   @Path("/top/{limit}")
   @Timed
-  public ArticleCollection getArticles(@PathParam("limit") int limit) {
+  public Response getArticles(@PathParam("limit") int limit) {
     ArrayList<ArticleResponse> articleResponses = articleCollection.find()
         .limit(limit)
         .map(ArticleApiResponseMapper::map)
         .into(new ArrayList<>());
 
-    return new ArticleCollection(articleResponses.size(), articleResponses);
+    return Response.ok(new ArticleCollection(articleResponses.size(), articleResponses)).build();
   }
 
 }

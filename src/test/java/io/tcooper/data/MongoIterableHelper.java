@@ -5,13 +5,18 @@ import com.mongodb.Function;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoIterable;
 import java.util.Collection;
+import java.util.List;
 
 public class MongoIterableHelper<T> implements MongoIterable<T> {
 
-  private final T content;
+  private final List<T> content;
+
+  public MongoIterableHelper(List<T> content) {
+    this.content = content;
+  }
 
   public MongoIterableHelper(T content) {
-    this.content = content;
+    this.content = List.of(content);
   }
 
   @Override
@@ -26,7 +31,9 @@ public class MongoIterableHelper<T> implements MongoIterable<T> {
 
   @Override
   public T first() {
-    return content;
+    return content == null
+        ? null
+        : content.stream().findFirst().get();
   }
 
   @Override
@@ -41,7 +48,9 @@ public class MongoIterableHelper<T> implements MongoIterable<T> {
 
   @Override
   public Collection into(Collection collection) {
-    return null;
+    if(content != null)
+      collection.addAll(content);
+    return collection;
   }
 
   @Override
